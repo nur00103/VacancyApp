@@ -3,6 +3,8 @@ package com.example.vacancyapp.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -27,9 +29,10 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Role> roles;
 
-    @OneToMany(mappedBy="user")
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<Vacancy> vacancies;
+    @ColumnDefault("1")
+    private Integer status;
+
 }

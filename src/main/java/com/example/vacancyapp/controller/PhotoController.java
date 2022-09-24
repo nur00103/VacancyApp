@@ -1,6 +1,6 @@
 package com.example.vacancyapp.controller;
 
-import com.example.vacancyapp.dto.response.ResponseModel;
+import com.example.vacancyapp.dto.response.ResponsePhoto;
 import com.example.vacancyapp.service.PhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ public class PhotoController {
     private final PhotoService photoService;
 
     @PostMapping("/upload")
-    public ResponseModel uploadPhoto(@RequestPart("file")MultipartFile multipartFile){
+    public ResponsePhoto uploadPhoto(@RequestPart("file")MultipartFile multipartFile){
         return photoService.uploadPhoto(multipartFile);
     }
 }

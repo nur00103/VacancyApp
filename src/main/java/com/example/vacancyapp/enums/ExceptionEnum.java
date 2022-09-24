@@ -14,8 +14,12 @@ public enum ExceptionEnum {
     ERROR(500,"Something went wrong"),
 
     EMPTY(405,"Users are not exist yet"),
+    EMPTY_SKILL(405,"Skill are not exist"),
+    EMPTY_VACANCY(405,"Vacancy are not exist"),
 
-    BAD_REQUEST(406,"Bad request.Cannot send empty data");
+    BAD_REQUEST(408,"Bad request.Cannot send empty data"),
+    MAIL(407,"Mail is already in use"),
+    ROLE(409,"Role is not defined.There are three roles:USER,ADMIN,HR");
 
     private final String message;
 

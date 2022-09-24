@@ -3,6 +3,8 @@ package com.example.vacancyapp.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -30,11 +32,15 @@ public class Vacancy {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Skill> skills;
 
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
+
+    @ColumnDefault("1")
+    private Integer status;
 
 
 }

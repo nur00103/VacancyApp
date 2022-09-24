@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResponseModel {
+public class ResponsePhoto {
 
     private PhotoResponse result;
     private Boolean error;

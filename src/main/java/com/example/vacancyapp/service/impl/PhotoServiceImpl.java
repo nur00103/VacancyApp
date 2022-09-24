@@ -1,10 +1,11 @@
-package com.example.vacancyapp.service;
+package com.example.vacancyapp.service.impl;
 
-import com.example.vacancyapp.dto.response.ResponseModel;
+import com.example.vacancyapp.dto.response.ResponsePhoto;
 import com.example.vacancyapp.entity.Photo;
 import com.example.vacancyapp.enums.ExceptionEnum;
 import com.example.vacancyapp.exception.MyException;
 import com.example.vacancyapp.repository.PhotoRepository;
+import com.example.vacancyapp.service.PhotoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ import java.io.FileOutputStream;
 @RequiredArgsConstructor
 @Service
 @Slf4j
-public class PhotoServiceImpl implements PhotoService{
+public class PhotoServiceImpl implements PhotoService {
 
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
@@ -32,7 +33,7 @@ public class PhotoServiceImpl implements PhotoService{
     private final PhotoRepository photoRepository;
 
     @Override
-    public ResponseModel uploadPhoto(MultipartFile multipartFile) {
+    public ResponsePhoto uploadPhoto(MultipartFile multipartFile) {
         try {
             String url = "https://vusalrehimov.000webhostapp.com/upload.php";
             File file = multipartFileToFile(multipartFile);
@@ -49,8 +50,8 @@ public class PhotoServiceImpl implements PhotoService{
 
             String response = objectMapper.writeValueAsString(result);
 
-            ResponseModel responseModel =
-                    objectMapper.readValue(response, ResponseModel.class);
+            ResponsePhoto responseModel =
+                    objectMapper.readValue(response, ResponsePhoto.class);
 
             if (responseModel.getError()) {
                 throw new MyException(ExceptionEnum.PHOTO);
