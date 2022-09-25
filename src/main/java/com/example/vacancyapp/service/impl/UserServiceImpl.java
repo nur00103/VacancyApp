@@ -1,5 +1,9 @@
 package com.example.vacancyapp.service.impl;
 
+import com.example.vacancyapp.confirmation.ConfirmationToken;
+import com.example.vacancyapp.confirmation.ConfirmationTokenRepo;
+import com.example.vacancyapp.confirmation.ConfirmationTokenService;
+import com.example.vacancyapp.confirmation.EmailSender;
 import com.example.vacancyapp.dto.request.UserRequest;
 import com.example.vacancyapp.dto.response.ResponseModel;
 import com.example.vacancyapp.dto.response.UserResponse;
@@ -14,8 +18,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
+
     @Override
     public ResponseModel<UserResponse> save(UserRequest userRequest) {
        if (userRequest==null || userRequest.equals(null)){
@@ -35,6 +43,7 @@ public class UserServiceImpl implements UserService {
            throw new MyException(ExceptionEnum.MAIL);
        }
        log.info("Roles:{}",userRequest.getRole());
+
         User user=convertToUser(userRequest);
         User savedUser=userRepository.save(user);
         UserResponse userResponse=convertToResponse(savedUser);
@@ -92,6 +101,8 @@ public class UserServiceImpl implements UserService {
         user.setStatus(0);
         userRepository.save(user);
     }
+
+
 
     public User convertToUser(UserRequest userRequest){
         User user=new User();

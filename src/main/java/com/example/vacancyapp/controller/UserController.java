@@ -41,5 +41,9 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+//    @GetMapping(path = "confirm")
+//    public String confirm(@RequestParam("token") String token) {
+//        return userService.confirmToken(token);
+//    }
 
 }

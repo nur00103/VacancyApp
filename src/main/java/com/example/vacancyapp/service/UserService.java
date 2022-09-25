@@ -17,4 +17,5 @@ public interface UserService {
     ResponseModel<UserResponse> updateUser(Long userId, UserRequest userRequest);
 
     void deleteUser(Long userId);
+
 }

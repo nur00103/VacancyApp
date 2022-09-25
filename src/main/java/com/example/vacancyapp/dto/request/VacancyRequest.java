@@ -19,8 +19,8 @@ public class VacancyRequest {
     private String category;
     private String address;
     private Double salary;
-    private String startDate;
-    private String endDate;
+    private Date startDate;
+    private Date endDate;
     private String description;
     private Long userId;
     private List<SkillRequest> skills;
