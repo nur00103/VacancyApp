@@ -16,6 +16,10 @@ import com.example.vacancyapp.repository.UserRepository;
 import com.example.vacancyapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,10 +32,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+//    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -43,8 +48,9 @@ public class UserServiceImpl implements UserService {
            throw new MyException(ExceptionEnum.MAIL);
        }
        log.info("Roles:{}",userRequest.getRole());
-
+//        String encodedPassword=passwordEncoder.encode(userRequest.getPassword());
         User user=convertToUser(userRequest);
+//        user.setPassword(encodedPassword);
         User savedUser=userRepository.save(user);
         UserResponse userResponse=convertToResponse(savedUser);
         return ResponseModel.<UserResponse>builder().result(userResponse).error(false)
@@ -83,7 +89,9 @@ public class UserServiceImpl implements UserService {
         user.setName(data.getName());
         user.setSurname(data.getSurname());
         user.setMail(data.getMail());
-        user.setPassword(data.getPassword());
+//        String encodedPassword=passwordEncoder.encode(data.getPassword());
+//        user.setPassword(encodedPassword);
+        user.setPassword(userRequest.getPassword());
         user.setPhoto(data.getPhoto());
         user.setRoles(data.getRoles());
         User updatedUser=userRepository.save(user);
@@ -128,4 +136,12 @@ public class UserServiceImpl implements UserService {
                 .status(user.getStatus()).photo(user.getPhoto()).role(user.getRoles()).build();
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
+        UserDetails userDetails=userRepository.findByMail(mail);
+        if (userDetails==null){
+            throw new MyException(ExceptionEnum.USER_NOT_FOUND);
+        }
+        return userDetails;
+    }
 }

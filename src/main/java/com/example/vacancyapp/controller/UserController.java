@@ -5,6 +5,7 @@ import com.example.vacancyapp.dto.response.ResponseModel;
 import com.example.vacancyapp.dto.response.UserResponse;
 import com.example.vacancyapp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,15 +19,18 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAnyAuthority('USER','HR')")
     public ResponseModel<UserResponse> getUserById(@PathVariable @Valid Long userId){
         return userService.getUserById(userId);
     }
 
     @PutMapping("/{userId}")
+    @PreAuthorize("hasAnyAuthority('USER','HR')")
     public ResponseModel<UserResponse> updateUser(@PathVariable @Valid Long userId,@Valid @RequestBody UserRequest userRequest){
         return userService.updateUser(userId,userRequest);
     }
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAnyAuthority('USER','HR')")
     public void deleteUser(@PathVariable @Valid Long userId){
         userService.deleteUser(userId);
     }
@@ -37,6 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
+    @PreAuthorize("hasAnyAuthority('HR')")
     public ResponseModel<List<UserResponse>> getAllUsers(){
         return userService.getAllUsers();
     }

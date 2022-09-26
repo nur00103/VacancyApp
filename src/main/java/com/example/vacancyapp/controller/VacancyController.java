@@ -7,6 +7,7 @@ import com.example.vacancyapp.dto.response.VacancyResponse;
 import com.example.vacancyapp.entity.Vacancy;
 import com.example.vacancyapp.service.VacancyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,29 +22,35 @@ public class VacancyController {
     private final VacancyService vacancyService;
 
     @GetMapping("/vacancies")
+    @PreAuthorize("hasAnyAuthority('USER','HR')")
     public ResponseModel<List<VacancyResponse>> getAllVacancies(){
         return vacancyService.getAllVacancies();
     }
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('HR')")
     public ResponseModel<VacancyResponse> saveVacancy(@RequestBody @Valid VacancyRequest vacancyRequest) throws ParseException {
         return vacancyService.saveVacancy(vacancyRequest);
     }
     @GetMapping("/{vacancyId}")
+    @PreAuthorize("hasAnyAuthority('USER','HR')")
     public ResponseModel<VacancyResponse> getVacancyById(@PathVariable @Valid Long vacancyId){
         return vacancyService.getVacancyById(vacancyId);
     }
     @PutMapping("/{vacancyId}")
+    @PreAuthorize("hasAnyAuthority('HR')")
     public ResponseModel<VacancyResponse> updateVacancy(@PathVariable @Valid Long vacancyId,
                                                         @RequestBody @Valid VacancyRequest vacancyRequest) throws ParseException {
         return vacancyService.updateVacancy(vacancyId,vacancyRequest);
     }
 
     @DeleteMapping("/{vacancyId}")
+    @PreAuthorize("hasAnyAuthority('HR')")
     public void deleteVacancy(@PathVariable @Valid Long vacancyId){
         vacancyService.deleteVacancy(vacancyId);
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasAnyAuthority('USER','HR')")
     public ResponseModelForPagen<List<VacancyResponse>> search(@RequestParam(value = "name", required = false) String name,
                                                                @RequestParam(value = "category", required = false) String category,
                                                                @RequestParam(value = "address", required = false) String address,

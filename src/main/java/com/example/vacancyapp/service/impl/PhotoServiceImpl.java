@@ -45,7 +45,7 @@ public class PhotoServiceImpl implements PhotoService {
                     .body(BodyInserters.fromMultipartData(multiValueMap))
                     .retrieve()
                     .bodyToMono(Object.class)
-                    .block();
+                            .block();
             file.delete();
 
             String response = objectMapper.writeValueAsString(result);
