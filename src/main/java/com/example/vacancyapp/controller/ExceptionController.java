@@ -4,6 +4,7 @@ import com.example.vacancyapp.dto.response.ResponseModel;
 import com.example.vacancyapp.dto.response.UserResponse;
 import com.example.vacancyapp.enums.ExceptionEnum;
 import com.example.vacancyapp.exception.MyException;
+import io.jsonwebtoken.JwtException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,14 +40,15 @@ public class ExceptionController {
                 .code(ExceptionEnum.BAD_REQUEST.getCode()).result(null).error(true).build();
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseModel<UserResponse> exceptionAll(Exception e){
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseModel<UserResponse> exceptionAllRunTime(RuntimeException e){
         return ResponseModel.<UserResponse>builder().status(e.getMessage())
                 .code(404).result(null).error(true).build();
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseModel<UserResponse> exceptionAllRunTime(RuntimeException e){
+    @ExceptionHandler(Exception.class)
+    public ResponseModel<UserResponse> exceptionAll(Exception e){
         return ResponseModel.<UserResponse>builder().status(e.getMessage())
                 .code(404).result(null).error(true).build();
     }

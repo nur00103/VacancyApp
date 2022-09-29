@@ -14,6 +14,7 @@ import com.example.vacancyapp.exception.MyException;
 import com.example.vacancyapp.repository.RoleRepository;
 import com.example.vacancyapp.repository.UserRepository;
 import com.example.vacancyapp.service.UserService;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

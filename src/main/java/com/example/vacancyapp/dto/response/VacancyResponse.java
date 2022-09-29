@@ -24,7 +24,7 @@ public class VacancyResponse {
     private String startDate;
     private String endDate;
     private String description;
-    private User user;
+    private UserResponse userResponse;
     private Integer status;
     private List<Skill> skills;
 }

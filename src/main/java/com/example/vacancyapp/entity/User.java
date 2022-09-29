@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
-@Table(name = "users")
+//@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -59,7 +59,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
@@ -76,4 +76,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
+    //AAA ok ora onda UserResponse vererem men ele bildim bunlar qayitmamalidi
 }

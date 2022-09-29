@@ -21,6 +21,7 @@ public class VacancyController {
 
     private final VacancyService vacancyService;
 
+//bir dk
     @GetMapping("/vacancies")
     @PreAuthorize("hasAnyAuthority('USER','HR')")
     public ResponseModel<List<VacancyResponse>> getAllVacancies(){

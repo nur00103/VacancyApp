@@ -33,6 +33,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     private final VacancyRepository vacancyRepository;
     private final UserRepository userRepository;
+    private final UserServiceImpl userService;
 
     private final VacancyDao vacancyDao;
 
@@ -133,10 +134,12 @@ public class VacancyServiceImpl implements VacancyService {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String startDate=formatter.format(vacancy.getStartDate());
         String endDate=formatter.format(vacancy.getEndDate());
+        UserResponse userResponse=userService.convertToResponse(vacancy.getUser());
         return VacancyResponse.builder().id(vacancy.getId()).address(vacancy.getAddress()).name(vacancy.getName())
                 .category(vacancy.getCategory()).salary(vacancy.getSalary()).description(vacancy.getDescription())
-                .startDate(startDate).endDate(endDate).user(vacancy.getUser())
+                .startDate(startDate).endDate(endDate).userResponse(userResponse)
                 .status(vacancy.getStatus()).skills(vacancy.getSkills()).build();
+
     }
 
     public Vacancy convertToEntity(VacancyRequest vacancyRequest) throws ParseException {

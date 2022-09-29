@@ -1,5 +1,6 @@
 package com.example.vacancyapp.service.impl;
 
+import com.example.vacancyapp.dto.response.PhotoResponse;
 import com.example.vacancyapp.dto.response.ResponsePhoto;
 import com.example.vacancyapp.entity.Photo;
 import com.example.vacancyapp.enums.ExceptionEnum;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
@@ -65,7 +67,11 @@ public class PhotoServiceImpl implements PhotoService {
         }catch (Exception ex){
             log.error("Error", ex);
             ex.printStackTrace();
-            return null;
+            return new ResponsePhoto(
+                    new PhotoResponse(null),
+                    true,
+                    HttpStatus.BAD_REQUEST.value()
+            );
         }
     }
 

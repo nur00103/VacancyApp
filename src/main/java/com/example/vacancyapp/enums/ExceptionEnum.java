@@ -8,6 +8,8 @@ public enum ExceptionEnum {
 
     UNKNOWN(403,"Unknown error"),
     PHOTO(404,"Photo hasn't been uploaded"),
+
+    NOT_VALID_TOKEN(657,"JWT Token is not valid"),
     SUCCESS(200,"Success"),
 
     ERROR(500,"Something went wrong"),

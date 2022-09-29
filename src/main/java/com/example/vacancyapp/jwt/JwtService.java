@@ -4,6 +4,9 @@ import com.example.vacancyapp.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,9 @@ import java.time.Instant;
 import java.util.Date;
 
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class JwtService {
 
     @Value("${jwt-secret-key}")
