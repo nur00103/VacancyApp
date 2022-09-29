@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -48,9 +48,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
            throw new MyException(ExceptionEnum.MAIL);
        }
        log.info("Roles:{}",userRequest.getRole());
-//        String encodedPassword=passwordEncoder.encode(userRequest.getPassword());
+        String encodedPassword=passwordEncoder.encode(userRequest.getPassword());
         User user=convertToUser(userRequest);
-//        user.setPassword(encodedPassword);
+        user.setPassword(encodedPassword);
         User savedUser=userRepository.save(user);
         UserResponse userResponse=convertToResponse(savedUser);
         return ResponseModel.<UserResponse>builder().result(userResponse).error(false)
@@ -89,9 +89,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setName(data.getName());
         user.setSurname(data.getSurname());
         user.setMail(data.getMail());
-//        String encodedPassword=passwordEncoder.encode(data.getPassword());
-//        user.setPassword(encodedPassword);
-        user.setPassword(userRequest.getPassword());
+        String encodedPassword=passwordEncoder.encode(data.getPassword());
+        user.setPassword(encodedPassword);
+//        user.setPassword(userRequest.getPassword());
         user.setPhoto(data.getPhoto());
         user.setRoles(data.getRoles());
         User updatedUser=userRepository.save(user);

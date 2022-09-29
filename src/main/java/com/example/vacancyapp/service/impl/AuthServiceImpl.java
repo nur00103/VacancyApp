@@ -9,6 +9,7 @@ import com.example.vacancyapp.exception.MyException;
 import com.example.vacancyapp.jwt.JwtService;
 import com.example.vacancyapp.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
  private final AuthenticationManager authenticationManager;
@@ -27,7 +29,8 @@ public class AuthServiceImpl implements AuthService {
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(loginRequest.getMail(), loginRequest.getPassword());
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
-            User user= (User) authentication.getPrincipal();
+            log.info("User {}",authentication.getPrincipal());
+            User user= (User) authentication.getPrincipal(); //Exception: User account has expired
             String token=jwtService.getToken(user);
             LoginResponse loginResponse=LoginResponse.builder().userId(user.getId()).accessToken(token).build();
             return ResponseModel.<LoginResponse>builder().result(loginResponse).error(false)
