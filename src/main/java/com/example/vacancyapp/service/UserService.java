@@ -16,9 +16,13 @@ public interface UserService {
 
     ResponseModel<UserResponse> getUserById(Long userId);
 
-    ResponseModel<UserResponse> updateUser(Long userId, UserRequest userRequest);
+    ResponseModel<UserResponse> updateUser(Long userId, UserRequest userRequest) throws MessagingException, UnsupportedEncodingException;
 
     void deleteUser(Long userId);
 
     ResponseModel<UserResponse> confirmToken(String token);
+
+    String forgotPassword(Long userId) throws MessagingException, UnsupportedEncodingException;
+
+    ResponseModel<UserResponse> changePassword(String token, String password);
 }

@@ -34,7 +34,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/auth/login","/user/save","/user/confirm/{token}","/file/upload").permitAll()
+        http.authorizeRequests().antMatchers("/auth/login","/user/save","/user/confirmation/{token}","/file/upload").permitAll()
                 .anyRequest().authenticated().and()
                 .httpBasic();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

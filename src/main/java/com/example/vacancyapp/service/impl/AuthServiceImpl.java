@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
                     new UsernamePasswordAuthenticationToken(loginRequest.getMail(), loginRequest.getPassword());
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
             log.info("User {}",authentication.getPrincipal());
-            User user= (User) authentication.getPrincipal(); //Exception: User account has expired
+            User user= (User) authentication.getPrincipal();
             String token=jwtService.getToken(user);
             LoginResponse loginResponse=LoginResponse.builder().userId(user.getId()).accessToken(token).build();
             return ResponseModel.<LoginResponse>builder().result(loginResponse).error(false)

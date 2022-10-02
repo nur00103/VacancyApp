@@ -79,7 +79,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public ResponseModel<UserResponse> updateUser(Long userId, UserRequest userRequest) {
+    @Transactional
+    public ResponseModel<UserResponse> updateUser(Long userId, UserRequest userRequest) throws MessagingException, UnsupportedEncodingException {
         if (userId==null){
             throw new MyException(ExceptionEnum.INPUT);
         }
@@ -87,13 +88,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new MyException(ExceptionEnum.BAD_REQUEST);
         }
         User user=userRepository.findById(userId).orElseThrow(()->new MyException(ExceptionEnum.USER_NOT_FOUND));
+        if (user.getMail()!=userRequest.getEmail()){
+            User data=convertToUser(userRequest);
+            user.setName(data.getName());
+            user.setSurname(data.getSurname());
+            String encodedPassword=passwordEncoder.encode(data.getPassword());
+            user.setPassword(encodedPassword);
+            user.setPhoto(data.getPhoto());
+            user.setRoles(data.getRoles());
+            user.setStatus(0);
+            User updatedUser=userRepository.save(user);
+            confirmationTokenService.sendConfirmationMail(updatedUser);
+        }
         User data=convertToUser(userRequest);
         user.setName(data.getName());
         user.setSurname(data.getSurname());
         user.setMail(data.getMail());
         String encodedPassword=passwordEncoder.encode(data.getPassword());
         user.setPassword(encodedPassword);
-//        user.setPassword(userRequest.getPassword());
         user.setPhoto(data.getPhoto());
         user.setRoles(data.getRoles());
         User updatedUser=userRepository.save(user);
@@ -125,6 +137,28 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return ResponseModel.<UserResponse>builder().result(userResponse).error(false)
                     .code(ExceptionEnum.SUCCESS.getCode()).status(ExceptionEnum.SUCCESS.getMessage()).build();
 
+    }
+
+    @Override
+    @Transactional
+    public String forgotPassword(Long userId) throws MessagingException, UnsupportedEncodingException {
+        if (userId==null){
+            throw new MyException(ExceptionEnum.INPUT);
+        }
+        User user=userRepository.findById(userId).orElseThrow(()->new MyException(ExceptionEnum.USER_NOT_FOUND));
+        confirmationTokenService.sendConfirmationMail(user);
+        return "Check your mail";
+    }
+
+    @Override
+    public ResponseModel<UserResponse> changePassword(String token, String password) {
+        ConfirmationToken confirmationToken=confirmationTokenService.getByToken(token);
+        User user=userRepository.findByMail(confirmationToken.getEmail());
+        user.setPassword(passwordEncoder.encode(password));
+        User changedUser=userRepository.save(user);
+        UserResponse userResponse=convertToResponse(changedUser);
+        return ResponseModel.<UserResponse>builder().result(userResponse).error(false)
+                .code(ExceptionEnum.SUCCESS.getCode()).status(ExceptionEnum.SUCCESS.getMessage()).build();
     }
 
 

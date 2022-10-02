@@ -28,7 +28,7 @@ public class UserController {
 
     @PutMapping("/{userId}")
     @PreAuthorize("hasAnyAuthority('USER','HR')")
-    public ResponseModel<UserResponse> updateUser(@PathVariable @Valid Long userId,@Valid @RequestBody UserRequest userRequest){
+    public ResponseModel<UserResponse> updateUser(@PathVariable @Valid Long userId,@Valid @RequestBody UserRequest userRequest) throws MessagingException, UnsupportedEncodingException {
         return userService.updateUser(userId,userRequest);
     }
     @DeleteMapping("/{userId}")
@@ -41,9 +41,18 @@ public class UserController {
     public ResponseModel<UserResponse> save(@RequestBody @Valid UserRequest userRequest) throws MessagingException, UnsupportedEncodingException {
          return userService.save(userRequest);
     }
-    @GetMapping("/confirm/{token}")
+    @GetMapping("/confirmation/{token}")
     public ResponseModel<UserResponse> confirm(@PathVariable("token") String token) {
         return userService.confirmToken(token);
+    }
+    @PostMapping("/confirmation/{token}")
+    public ResponseModel<UserResponse> changePassword(@PathVariable("token") String token,String password) {
+        return userService.changePassword(token,password);
+    }
+
+    @PostMapping("/forgotPassword/{userId}")
+    public String forgotPassword(@PathVariable Long userId) throws MessagingException, UnsupportedEncodingException {
+        return userService.forgotPassword(userId);
     }
 
     @GetMapping("/users")
