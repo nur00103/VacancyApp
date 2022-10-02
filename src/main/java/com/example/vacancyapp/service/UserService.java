@@ -4,11 +4,13 @@ import com.example.vacancyapp.dto.request.UserRequest;
 import com.example.vacancyapp.dto.response.ResponseModel;
 import com.example.vacancyapp.dto.response.UserResponse;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface UserService {
 
-    ResponseModel<UserResponse> save(UserRequest userRequest);
+    ResponseModel<UserResponse> save(UserRequest userRequest) throws MessagingException, UnsupportedEncodingException;
 
     ResponseModel<List<UserResponse>> getAllUsers();
 
@@ -18,4 +20,5 @@ public interface UserService {
 
     void deleteUser(Long userId);
 
+    ResponseModel<UserResponse> confirmToken(String token);
 }

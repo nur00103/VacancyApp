@@ -23,5 +23,5 @@ public class UserResponse {
     private List<Role> role;
     private Integer status;
 
-    //mende hec enabled falan yoxdu axi onlar harda  geldi ele
+
 }

@@ -7,7 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -15,15 +18,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ConfirmationToken {
+    public static final long TOKEN_EXPIRED_TIME = 900;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String token;
-    private LocalDateTime createdAt;
-    private LocalDateTime expiresAt;
+    private Date expiredAt;
+    private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    public ConfirmationToken(User user) {
+        this.email = user.getMail();
+        this.token = UUID.randomUUID().toString();
+        this.expiredAt = Date.from(Instant.now().plusSeconds(TOKEN_EXPIRED_TIME));
+    }
 }

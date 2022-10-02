@@ -10,6 +10,7 @@ public enum ExceptionEnum {
     PHOTO(404,"Photo hasn't been uploaded"),
 
     NOT_VALID_TOKEN(657,"JWT Token is not valid"),
+    EXPIRED_TOKEN(658,"Token has expired"),
     SUCCESS(200,"Success"),
 
     ERROR(500,"Something went wrong"),

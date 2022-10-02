@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
@@ -36,8 +38,12 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public ResponseModel<UserResponse> save(@RequestBody @Valid UserRequest userRequest){
+    public ResponseModel<UserResponse> save(@RequestBody @Valid UserRequest userRequest) throws MessagingException, UnsupportedEncodingException {
          return userService.save(userRequest);
+    }
+    @GetMapping("/confirm/{token}")
+    public ResponseModel<UserResponse> confirm(@PathVariable("token") String token) {
+        return userService.confirmToken(token);
     }
 
     @GetMapping("/users")
@@ -46,9 +52,6 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-//    @GetMapping(path = "confirm")
-//    public String confirm(@RequestParam("token") String token) {
-//        return userService.confirmToken(token);
-//    }
+
 
 }

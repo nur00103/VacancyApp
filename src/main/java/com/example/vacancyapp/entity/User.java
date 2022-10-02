@@ -35,11 +35,11 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Role> roles;
 
-    @ColumnDefault("1")
-    private Integer status;
+    @ColumnDefault("0")
+    private Integer status=0;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -78,5 +78,4 @@ public class User implements UserDetails {
     }
 
 
-    //AAA ok ora onda UserResponse vererem men ele bildim bunlar qayitmamalidi
 }
