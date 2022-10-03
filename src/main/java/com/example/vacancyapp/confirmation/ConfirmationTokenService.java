@@ -42,7 +42,6 @@ public class ConfirmationTokenService {
         mimeMessageHelper.setSubject("Confirmation mail");
         mimeMessageHelper.setText(getConfirmMessage(user, savedConfirmToken), true);
         javaMailSender.send(message);
-
     }
     private String getConfirmMessage(User user, ConfirmationToken confirmationToken) {
         String link = appHost + "/user/confirmation/" + confirmationToken.getToken();

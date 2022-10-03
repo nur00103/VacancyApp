@@ -42,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            if (request.getServletPath().startsWith("/auth/login")|| request.getServletPath().startsWith("/user/confirmation/{token}") || request.getServletPath().startsWith("/user/save") || request.getServletPath().startsWith("/file/upload")) {
+            if (request.getServletPath().startsWith("/auth/login")|| request.getServletPath().startsWith("/user/confirmation/") || request.getServletPath().startsWith("/user/save") || request.getServletPath().startsWith("/file/upload")) {
                 filterChain.doFilter(request, response);
             } else {
                 String header = request.getHeader(HttpHeaders.AUTHORIZATION);

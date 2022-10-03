@@ -45,9 +45,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
        if (userRequest==null || userRequest.equals(null)){
            throw new MyException(ExceptionEnum.BAD_REQUEST);
        }
-//       if (userRepository.findByMail(userRequest.getEmail())!=null){
-//           throw new MyException(ExceptionEnum.MAIL);
-//       }
+       if (userRepository.findByMail(userRequest.getEmail())!=null){
+           throw new MyException(ExceptionEnum.MAIL);
+       }
        log.info("Roles:{}",userRequest.getRole());
         String encodedPassword=passwordEncoder.encode(userRequest.getPassword());
         User user=convertToUser(userRequest);

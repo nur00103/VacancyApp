@@ -52,4 +52,5 @@ public class ExceptionController {
         return ResponseModel.<UserResponse>builder().status(e.getMessage())
                 .code(404).result(null).error(true).build();
     }
+
 }

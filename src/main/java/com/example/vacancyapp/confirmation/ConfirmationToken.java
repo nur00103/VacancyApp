@@ -18,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class ConfirmationToken {
-    public static final long TOKEN_EXPIRED_TIME = 900;
+    public static final long TOKEN_EXPIRED_TIME = 9000;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
