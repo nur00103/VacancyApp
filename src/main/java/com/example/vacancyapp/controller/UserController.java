@@ -45,14 +45,14 @@ public class UserController {
     public ResponseModel<UserResponse> confirm(@PathVariable("token") String token) {
         return userService.confirmToken(token);
     }
-    @PostMapping("/confirmation/{token}")
-    public ResponseModel<UserResponse> changePassword(@PathVariable("token") String token,String password) {
+    @PostMapping("/confirmPassword/{token}")
+    public ResponseModel<UserResponse> changePassword(@PathVariable("token") String token,@RequestBody String password) {
         return userService.changePassword(token,password);
     }
 
-    @PostMapping("/forgotPassword/{userId}")
-    public String forgotPassword(@PathVariable Long userId) throws MessagingException, UnsupportedEncodingException {
-        return userService.forgotPassword(userId);
+    @PostMapping("/forgotPassword/{email}")
+    public ResponseModel<UserResponse> forgotPassword(@PathVariable String email) throws MessagingException, UnsupportedEncodingException {
+        return userService.forgotPassword(email);
     }
 
     @GetMapping("/users")

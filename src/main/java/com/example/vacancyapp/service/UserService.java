@@ -22,7 +22,7 @@ public interface UserService {
 
     ResponseModel<UserResponse> confirmToken(String token);
 
-    String forgotPassword(Long userId) throws MessagingException, UnsupportedEncodingException;
+    ResponseModel<UserResponse> forgotPassword(String email) throws MessagingException, UnsupportedEncodingException;
 
     ResponseModel<UserResponse> changePassword(String token, String password);
 }

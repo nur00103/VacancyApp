@@ -53,6 +53,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user=convertToUser(userRequest);
         user.setPassword(encodedPassword);
         User savedUser=userRepository.save(user);
+        ConfirmationToken confirmationToken=new ConfirmationToken(user);
+        confirmationTokenRepo.save(confirmationToken);
         confirmationTokenService.sendConfirmationMail(savedUser);
         UserResponse userResponse=convertToResponse(savedUser);
         return ResponseModel.<UserResponse>builder().result(userResponse).error(false)
@@ -141,13 +143,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public String forgotPassword(Long userId) throws MessagingException, UnsupportedEncodingException {
-        if (userId==null){
+    public ResponseModel<UserResponse> forgotPassword(String email) throws MessagingException, UnsupportedEncodingException {
+        if (email==null){
             throw new MyException(ExceptionEnum.INPUT);
         }
-        User user=userRepository.findById(userId).orElseThrow(()->new MyException(ExceptionEnum.USER_NOT_FOUND));
-        confirmationTokenService.sendConfirmationMail(user);
-        return "Check your mail";
+        User user=userRepository.findByMail(email);
+        ConfirmationToken confirmationToken=new ConfirmationToken(user);
+        confirmationTokenRepo.save(confirmationToken);
+        if (user==null){
+            throw new MyException(ExceptionEnum.USER_NOT_FOUND);
+        }
+        confirmationTokenService.sendConfirmationMailForPassword(user);
+        UserResponse userResponse=convertToResponse(user);
+        return ResponseModel.<UserResponse>builder().result(userResponse).error(false)
+                .code(ExceptionEnum.SUCCESS.getCode()).status(ExceptionEnum.SUCCESS.getMessage()+".Check your mail").build();
     }
 
     @Override

@@ -34,19 +34,39 @@ public class ConfirmationTokenService {
     @Async
     public void sendConfirmationMail(User user) throws MessagingException, UnsupportedEncodingException {
         ConfirmationToken confirmationToken=new ConfirmationToken(user);
-        ConfirmationToken savedConfirmToken=confirmationTokenRepo.save(confirmationToken);
         MimeMessage message=javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(message);
         mimeMessageHelper.setFrom(new InternetAddress("verifificationprov@gmail.com","Vacancy"));
         mimeMessageHelper.setTo(confirmationToken.getEmail());
         mimeMessageHelper.setSubject("Confirmation mail");
-        mimeMessageHelper.setText(getConfirmMessage(user, savedConfirmToken), true);
+        mimeMessageHelper.setText(getConfirmMessage(user, confirmationToken), true);
         javaMailSender.send(message);
     }
     private String getConfirmMessage(User user, ConfirmationToken confirmationToken) {
         String link = appHost + "/user/confirmation/" + confirmationToken.getToken();
         String message = "<body>\n" +
-                "<h3>Welcome, " + user.getName().concat(" " + user.getSurname()) + "</h3>\n" +
+                "<h3>Hello, " + user.getName().concat(" " + user.getSurname()) + "</h3>\n" +
+                "<div>Please click <a href='" + link + "'>here</a> and confirm your email address</div>\n" +
+                "</body>\n" +
+                "</html>";
+        return message;
+    }
+    @Transactional
+    @Async
+    public void sendConfirmationMailForPassword(User user) throws MessagingException, UnsupportedEncodingException {
+        ConfirmationToken confirmationToken=new ConfirmationToken(user);
+        MimeMessage message=javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(message);
+        mimeMessageHelper.setFrom(new InternetAddress("verifificationprov@gmail.com","Vacancy"));
+        mimeMessageHelper.setTo(confirmationToken.getEmail());
+        mimeMessageHelper.setSubject("Confirmation mail");
+        mimeMessageHelper.setText(getConfirmMessageForPassword(user, confirmationToken), true);
+        javaMailSender.send(message);
+    }
+    private String getConfirmMessageForPassword(User user, ConfirmationToken confirmationToken) {
+        String link = appHost + "/user/confirmPassword/" + confirmationToken.getToken();
+        String message = "<body>\n" +
+                "<h3>Hello, " + user.getName().concat(" " + user.getSurname()) + "</h3>\n" +
                 "<div>Please click <a href='" + link + "'>here</a> and confirm your email address</div>\n" +
                 "</body>\n" +
                 "</html>";

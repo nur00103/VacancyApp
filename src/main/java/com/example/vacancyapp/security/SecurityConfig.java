@@ -35,7 +35,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/auth/login","/user/save","/user/confirmation/{token}","/file/upload").permitAll()
-                .antMatchers("/user/confirmation/*").permitAll()
+                .antMatchers("/user/confirmation/*","/user/forgotPassword/{email}","/user/confirmPassword/{token}").permitAll()
                 .anyRequest().authenticated().and()
                 .httpBasic();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
