@@ -50,8 +50,8 @@ public class UserController {
         return userService.changePassword(token,password);
     }
 
-    @PostMapping("/forgotPassword/{email}")
-    public ResponseModel<UserResponse> forgotPassword(@PathVariable String email) throws MessagingException, UnsupportedEncodingException {
+    @PostMapping("/forgotPassword")
+    public ResponseModel<UserResponse> forgotPassword(@RequestBody String email) throws MessagingException, UnsupportedEncodingException {
         return userService.forgotPassword(email);
     }
 
