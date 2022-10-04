@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping("/forgotPassword")
-    public ResponseModel<UserResponse> forgotPassword(@RequestBody String email) throws MessagingException, UnsupportedEncodingException {
+    public ResponseModel<UserResponse> forgotPassword(@RequestParam String email) throws MessagingException, UnsupportedEncodingException {
         return userService.forgotPassword(email);
     }
 
